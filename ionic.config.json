@@ -1,0 +1,7 @@
+{
+  "name": "apirickyandmorty",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
