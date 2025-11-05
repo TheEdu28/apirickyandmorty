@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
-      Blank
+      Rick and Morty
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,12 +9,67 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Rick and Morty</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <!-- Indicador de Carga -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <ion-text color="medium">
+      <p>Cargando personajes...</p>
+    </ion-text>
+  </div>
+
+  <!-- Mensaje de Error -->
+  <div *ngIf="hasError && !isLoading" class="error-container">
+    <ion-text color="danger">
+      <h2>¡Oops!</h2>
+      <p>{{ errorMessage }}</p>
+    </ion-text>
+    <ion-button (click)="retry()" color="primary">
+      <ion-icon slot="start" name="refresh-outline"></ion-icon>
+      Reintentar
+    </ion-button>
+  </div>
+
+  <!-- Lista de Personajes -->
+  <div *ngIf="!isLoading && !hasError" class="characters-container">
+    <ion-card *ngFor="let character of characters" class="character-card">
+      <div class="card-content-wrapper">
+        <!-- Imagen del Personaje -->
+        <ion-avatar class="character-avatar">
+          <img [src]="character.image" [alt]="character.name" />
+        </ion-avatar>
+
+        <!-- Información del Personaje -->
+        <ion-card-header>
+          <ion-card-title>{{ character.name }}</ion-card-title>
+          <ion-card-subtitle>
+            <ion-badge [class]="getStatusClass(character.status)">
+              {{ getStatusText(character.status) }}
+            </ion-badge>
+          </ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+          <div class="info-row">
+            <span class="info-label">Especie:</span>
+            <span class="info-value">{{ character.species }}</span>
+          </div>
+          
+          <div class="info-row">
+            <span class="info-label">Género:</span>
+            <span class="info-value">{{ getGenderText(character.gender) }}</span>
+          </div>
+          
+          <div class="info-row">
+            <span class="info-label">Origen:</span>
+            <span class="info-value">{{ character.origin.name }}</span>
+          </div>
+        </ion-card-content>
+      </div>
+    </ion-card>
   </div>
 </ion-content>
+
